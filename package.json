@@ -1,11 +1,39 @@
 {
   "name": "express-request-csv",
   "version": "1.0.0",
-  "description": "",
+  "description": "send csv when on request headers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava -v ./test/index.test.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": {
+    "name": "Michael McLaughlin",
+    "email": "mmclaughlin@brave.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^1.2.0",
+    "babel-eslint": "^10.0.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "json2csv": "^4.3.3",
+    "standard": "^12.0.1",
+    "supertest": "^3.4.2"
+  },
+  "peerDependencies": {
+    "express": "4",
+    "json2csv": "4"
+  },
+  "standard": {
+    "ignore": [],
+    "parser": "babel-eslint"
+  },
+  "ava": {
+    "files": [
+      "**/*.test.js",
+      "!test/**/*.test.js",
+      "!dist/**/*.test.js"
+    ]
+  },
+  "dependencies": {}
 }
