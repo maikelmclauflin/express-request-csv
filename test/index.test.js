@@ -7,7 +7,7 @@ import test from 'ava'
 import supertest from 'supertest'
 
 addRoute('/to-csv')
-const suffix = `; charset=utf-8`
+const contentHeader = (header) => `${header}; charset=utf-8`
 
 const basicObject = [{
   a: 1,
@@ -51,7 +51,7 @@ test('usually sends back json', async (t) => {
     .expect(ok)
 
   t.deepEqual(response.body, basicObject, 'the endpoint sends back the data sent to it')
-  t.is(response.get('Content-Type'), `application/json${suffix}`, 'a header is sent back')
+  t.is(response.get('Content-Type'), contentHeader(`application/json`), 'a header is sent back')
 })
 
 test('sends back csv when `Accept` header is added', async (t) => {
@@ -64,7 +64,7 @@ test('sends back csv when `Accept` header is added', async (t) => {
     .expect(ok)
 
   t.is(response.text, basicCSV, 'the endpoint can convert that data to a csv structure, using keys for the header')
-  t.is(response.get('Content-Type'), `text/csv${suffix}`, 'a header is sent back')
+  t.is(response.get('Content-Type'), contentHeader(`text/csv`), 'a header is sent back')
 })
 
 test('filters out columns if requested', async (t) => {
@@ -80,7 +80,7 @@ test('filters out columns if requested', async (t) => {
     .expect(ok)
 
   t.is(response.text, basicCSVSubset, 'only the requested columns are sent')
-  t.is(response.get('Content-Type'), `text/csv${suffix}`, 'a header is sent back')
+  t.is(response.get('Content-Type'), contentHeader(`text/csv`), 'a header is sent back')
 })
 
 test('can access deep columns', async (t) => {
@@ -114,7 +114,7 @@ test('json2csv is not required', async (t) => {
     .expect(ok)
 
   t.deepEqual(response.text, '"a","b","c"', 'a custom parser can be employed')
-  t.is(response.get('Content-Type'), `text/csv${suffix}`, 'a header is sent back')
+  t.is(response.get('Content-Type'), contentHeader(`text/csv`), 'a header is sent back')
 
   function Parser (config) {
     return {
@@ -167,7 +167,7 @@ test('alternative headers can be employed', async (t) => {
     .expect(ok)
 
   t.deepEqual(response.body, basicObject, 'objects with the original header will not be touched')
-  t.is(response.get('Content-Type'), `application/json${suffix}`, 'headers remain untouched')
+  t.is(response.get('Content-Type'), contentHeader(`application/json`), 'headers remain untouched')
 
   response = await supertest(app)
     .post('/to-csv-header')
@@ -176,5 +176,5 @@ test('alternative headers can be employed', async (t) => {
     .expect(ok)
 
   t.is(response.text, basicCSV, 'a custom parser can be employed when the matching header is sent')
-  t.is(response.get('Content-Type'), `text/alt${suffix}`, 'the same headers are sent back')
+  t.is(response.get('Content-Type'), contentHeader(`text/alt`), 'the same headers are sent back')
 })
