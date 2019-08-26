@@ -1,6 +1,6 @@
 {
   "name": "express-request-csv",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "send csv when on request headers",
   "main": "index.js",
   "scripts": {
